@@ -5,8 +5,8 @@ use crate::bibliography::bib_types::BibliographyType;
 #[derive(Clone, Debug)]
 pub struct BibliographyEntry {
     key: String,
-    note: Option<String>,
-    bib_type: BibliographyType,
+    pub note: Option<String>,
+    pub bib_type: BibliographyType,
 }
 
 pub type BibliographyEntryReference = Arc<Mutex<BibliographyEntry>>;
