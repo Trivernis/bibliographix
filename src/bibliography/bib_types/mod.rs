@@ -1,9 +1,11 @@
 use crate::bibliography::bib_types::article::Article;
 use crate::bibliography::bib_types::book::Book;
 use chrono::{Date, Local};
+use crate::bibliography::bib_types::booklet::Booklet;
 
 pub mod article;
 pub mod book;
+pub mod booklet;
 
 pub type LocalDate = Date<Local>;
 
@@ -12,7 +14,7 @@ pub type LocalDate = Date<Local>;
 pub enum BibliographyType {
     Article(Article),
     Book(Book),
-    Booklet,
+    Booklet(Booklet),
     InBook,
     InCollection,
     Manual,
