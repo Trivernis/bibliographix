@@ -3,6 +3,7 @@ use crate::bibliography::bib_types::book::Book;
 use crate::bibliography::bib_types::booklet::Booklet;
 use crate::bibliography::bib_types::in_book::InBook;
 use crate::bibliography::bib_types::in_collection::InCollection;
+use crate::bibliography::bib_types::manual::Manual;
 use chrono::{Date, Local};
 
 pub mod article;
@@ -10,6 +11,7 @@ pub mod book;
 pub mod booklet;
 pub mod in_book;
 pub mod in_collection;
+pub mod manual;
 
 pub type LocalDate = Date<Local>;
 
@@ -21,7 +23,7 @@ pub enum BibliographyType {
     Booklet(Booklet),
     InBook(InBook),
     InCollection(InCollection),
-    Manual,
+    Manual(Manual),
     Thesis,
     TechReport,
     Unpublished,
