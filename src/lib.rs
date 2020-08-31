@@ -1,14 +1,16 @@
 pub mod references;
+pub mod bibliography;
+pub mod bib_manager;
 
 #[cfg(test)]
 mod tests {
-    use crate::references::reference_manager::BibRefManager;
     use crate::references::bib_reference::BibRef;
+    use crate::bib_manager::BibManager;
 
     #[test]
     fn it_inserts_and_flattens() {
-        let manager = BibRefManager::new();
-        let root_anchor = manager.root_anchor();
+        let manager = BibManager::new();
+        let root_anchor = manager.root_ref_anchor();
         let mut root_anchor = root_anchor.lock().unwrap();
         root_anchor.insert(BibRef::new("test".to_string()));
         let child_anchor = root_anchor.create_anchor();
