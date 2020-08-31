@@ -16,7 +16,13 @@ pub struct InBook {
 
 impl InBook {
     /// Creates a new InBook source with only the mandatory values filled
-    pub fn new(author: String, title: String, position: String, publisher: String, date:LocalDate) -> Self {
+    pub fn new(
+        author: String,
+        title: String,
+        position: String,
+        publisher: String,
+        date: LocalDate,
+    ) -> Self {
         Self {
             author,
             title,

@@ -12,7 +12,7 @@ pub struct BibRef {
 /// and to access the corresponding bibliography entry.
 #[derive(Clone, Debug)]
 pub struct BibRefAnchor {
-    entry: Option<BibliographyEntryReference>
+    entry: Option<BibliographyEntryReference>,
 }
 
 impl BibRef {
@@ -20,7 +20,7 @@ impl BibRef {
     pub fn new(key: String) -> Self {
         Self {
             key,
-            anchor: Arc::new(Mutex::new(BibRefAnchor {entry: None}))
+            anchor: Arc::new(Mutex::new(BibRefAnchor { entry: None })),
         }
     }
 

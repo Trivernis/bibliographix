@@ -39,15 +39,13 @@ impl BibListAnchor {
     /// anchor in the vector
     pub fn flatten(&mut self) {
         let mut new_entries = Vec::with_capacity(self.entries.len());
-        self.entries.iter_mut().for_each(|e| {
-            match e {
-                BibListEntry::Anchor(a) => {
-                    let mut anchor = a.lock().unwrap();
-                    anchor.flatten();
-                    new_entries.append(&mut anchor.entries);
-                }
-                BibListEntry::Ref(bib_ref) => new_entries.push(BibListEntry::Ref(bib_ref.clone()))
+        self.entries.iter_mut().for_each(|e| match e {
+            BibListEntry::Anchor(a) => {
+                let mut anchor = a.lock().unwrap();
+                anchor.flatten();
+                new_entries.append(&mut anchor.entries);
             }
+            BibListEntry::Ref(bib_ref) => new_entries.push(BibListEntry::Ref(bib_ref.clone())),
         });
 
         self.entries = new_entries;
@@ -55,10 +53,15 @@ impl BibListAnchor {
 
     /// Returns all references that are contained in the entry list
     pub fn references(&self) -> Vec<BibRef> {
-        self.entries.iter().filter_map(|e| if let BibListEntry::Ref(r) = e {
-            Some(r.clone())
-        } else {
-            None
-        }).collect()
+        self.entries
+            .iter()
+            .filter_map(|e| {
+                if let BibListEntry::Ref(r) = e {
+                    Some(r.clone())
+                } else {
+                    None
+                }
+            })
+            .collect()
     }
 }

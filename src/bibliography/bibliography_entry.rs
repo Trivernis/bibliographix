@@ -1,5 +1,5 @@
-use std::sync::{Arc, Mutex};
 use crate::bibliography::bib_types::BibliographyType;
+use std::sync::{Arc, Mutex};
 
 /// A single bibliography entry
 #[derive(Clone, Debug)]
@@ -10,7 +10,6 @@ pub struct BibliographyEntry {
 }
 
 pub type BibliographyEntryReference = Arc<Mutex<BibliographyEntry>>;
-
 
 impl BibliographyEntry {
     /// Creates a new bibliography entry with the given key
@@ -27,4 +26,3 @@ impl BibliographyEntry {
         self.key.clone()
     }
 }
-

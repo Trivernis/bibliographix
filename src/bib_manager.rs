@@ -1,6 +1,6 @@
-use std::sync::{Arc, Mutex};
-use crate::references::anchor::BibListAnchor;
 use crate::bibliography::bibliography_dict::BibliographyDictionary;
+use crate::references::anchor::BibListAnchor;
+use std::sync::{Arc, Mutex};
 
 /// The root manager for that should be used for further reference operations that
 /// go beyond insertion.
