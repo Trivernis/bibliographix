@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// Source that is part of a book
 #[derive(Clone, Debug)]

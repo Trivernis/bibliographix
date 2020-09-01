@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// A source that does not fit any of the other types
 #[derive(Clone, Debug)]

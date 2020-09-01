@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// A booklet source where only the title can be known
 #[derive(Clone, Debug)]

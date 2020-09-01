@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// A source that is not formally published
 #[derive(Clone, Debug)]

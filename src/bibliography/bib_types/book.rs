@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 #[derive(Clone, Debug)]
 pub struct Book {

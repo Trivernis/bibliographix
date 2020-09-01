@@ -1,11 +1,15 @@
 pub mod bib_manager;
 pub mod bibliography;
 pub mod references;
+pub mod utils;
 
 #[cfg(test)]
 mod tests {
     use crate::bib_manager::BibManager;
+    use crate::bibliography::bibliography_entry::BibliographyEntry;
+    use crate::bibliography::FromHashMap;
     use crate::references::bib_reference::BibRef;
+    use std::collections::HashMap;
 
     #[test]
     fn it_inserts_and_flattens() {
@@ -25,5 +29,19 @@ mod tests {
         root_anchor.flatten();
 
         assert_eq!(root_anchor.references().len(), 3)
+    }
+
+    #[test]
+    fn it_converts_articles() {
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "test_entry".to_string());
+        map.insert("type".to_string(), "article".to_string());
+        map.insert("author".to_string(), "test".to_string());
+        map.insert("title".to_string(), "test_title".to_string());
+        map.insert("journal".to_string(), "test_journal".to_string());
+        map.insert("date".to_string(), "01.09.2020".to_string());
+        map.insert("note".to_string(), "This is a test".to_string());
+
+        BibliographyEntry::from_hash_map(&map).unwrap();
     }
 }

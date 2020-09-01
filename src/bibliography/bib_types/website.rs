@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// A website source that can only consists of an url
 #[derive(Clone, Debug)]

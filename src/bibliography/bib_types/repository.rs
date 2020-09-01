@@ -1,4 +1,4 @@
-use crate::bibliography::bib_types::LocalDate;
+use crate::utils::date::LocalDate;
 
 /// A repository source that represents any git repository or similar
 /// structures
@@ -13,7 +13,7 @@ pub struct Repository {
 }
 
 impl Repository {
-    /// Creates a new repository source with only the mandatory fiels filled
+    /// Creates a new repository source with only the mandatory fields filled
     pub fn new(author: String, title: String) -> Self {
         Self {
             author,
