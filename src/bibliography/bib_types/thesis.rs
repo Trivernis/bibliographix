@@ -3,11 +3,11 @@ use crate::bibliography::bib_types::LocalDate;
 /// A thesis source entry
 #[derive(Clone, Debug)]
 pub struct Thesis {
-    author: String,
-    title: String,
-    school: String,
-    date: LocalDate,
-    address: Option<String>,
+    pub author: String,
+    pub title: String,
+    pub school: String,
+    pub date: LocalDate,
+    pub address: Option<String>,
 }
 
 impl Thesis {
