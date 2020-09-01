@@ -32,7 +32,7 @@ mod tests {
     }
 
     #[test]
-    fn it_converts_articles() {
+    fn it_creates_articles_from_hashmaps() {
         let mut map: HashMap<String, String> = HashMap::new();
         map.insert("key".to_string(), "test_entry".to_string());
         map.insert("type".to_string(), "article".to_string());
@@ -42,6 +42,7 @@ mod tests {
         map.insert("date".to_string(), "01.09.2020".to_string());
         map.insert("note".to_string(), "This is a test".to_string());
 
-        BibliographyEntry::from_hash_map(&map).unwrap();
+        let entry = BibliographyEntry::from_hash_map(&map).unwrap();
+        assert_eq!(entry.bib_type.name(), "article".to_string())
     }
 }

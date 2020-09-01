@@ -43,6 +43,26 @@ pub enum BibliographyType {
     Repository(Repository),
 }
 
+impl BibliographyType {
+    /// Returns the name of the enums value as a string
+    pub fn name(&self) -> String {
+        match self {
+            Self::Article(_) => "article".to_string(),
+            Self::Book(_) => "book".to_string(),
+            Self::Booklet(_) => "booklet".to_string(),
+            Self::InBook(_) => "in_book".to_string(),
+            Self::InCollection(_) => "in_collection".to_string(),
+            Self::Manual(_) => "manual".to_string(),
+            Self::Thesis(_) => "thesis".to_string(),
+            Self::TechReport(_) => "tech_report".to_string(),
+            Self::Unpublished(_) => "unpublished".to_string(),
+            Self::Misc(_) => "misc".to_string(),
+            Self::Website(_) => "website".to_string(),
+            Self::Repository(_) => "repository".to_string(),
+        }
+    }
+}
+
 impl FromHashMap for BibliographyType {
     fn from_hash_map(map: &HashMap<String, String>) -> Option<Box<Self>> {
         if map.contains_key("type") {
