@@ -8,6 +8,7 @@ use crate::bibliography::bib_types::misc::Misc;
 use crate::bibliography::bib_types::tech_report::TechReport;
 use crate::bibliography::bib_types::thesis::Thesis;
 use crate::bibliography::bib_types::unpublished::Unpublished;
+use crate::bibliography::bib_types::website::Website;
 use chrono::{Date, Local};
 
 pub mod article;
@@ -20,6 +21,7 @@ pub mod misc;
 pub mod tech_report;
 pub mod thesis;
 pub mod unpublished;
+pub mod website;
 
 pub type LocalDate = Date<Local>;
 
@@ -36,6 +38,6 @@ pub enum BibliographyType {
     TechReport(TechReport),
     Unpublished(Unpublished),
     Misc(Misc),
-    Url,
+    Website(Website),
     Repository,
 }
