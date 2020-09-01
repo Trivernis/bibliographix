@@ -1,3 +1,4 @@
+use crate::bibliography::bib_types::misc::Misc;
 use crate::bibliography::bib_types::BibliographyType;
 use std::sync::{Arc, Mutex};
 
@@ -17,7 +18,7 @@ impl BibliographyEntry {
         Self {
             key,
             note: None,
-            bib_type: BibliographyType::Misc,
+            bib_type: BibliographyType::Misc(Misc::new()),
         }
     }
 
