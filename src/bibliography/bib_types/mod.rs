@@ -5,6 +5,7 @@ use crate::bibliography::bib_types::in_book::InBook;
 use crate::bibliography::bib_types::in_collection::InCollection;
 use crate::bibliography::bib_types::manual::Manual;
 use crate::bibliography::bib_types::misc::Misc;
+use crate::bibliography::bib_types::repository::Repository;
 use crate::bibliography::bib_types::tech_report::TechReport;
 use crate::bibliography::bib_types::thesis::Thesis;
 use crate::bibliography::bib_types::unpublished::Unpublished;
@@ -18,6 +19,7 @@ pub mod in_book;
 pub mod in_collection;
 pub mod manual;
 pub mod misc;
+pub mod repository;
 pub mod tech_report;
 pub mod thesis;
 pub mod unpublished;
@@ -39,5 +41,5 @@ pub enum BibliographyType {
     Unpublished(Unpublished),
     Misc(Misc),
     Website(Website),
-    Repository,
+    Repository(Repository),
 }
