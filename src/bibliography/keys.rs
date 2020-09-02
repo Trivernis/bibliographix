@@ -17,6 +17,7 @@ pub const K_NOTE: &str = "note";
 pub const K_HOW_PUBLISHED: &str = "how_published";
 pub const K_EDITOR: &str = "editor";
 pub const K_POSITION: &str = "position";
+pub const K_ORGANIZATION: &str = "organization";
 
 pub const T_ARTICLE: &str = "article";
 pub const T_BOOK: &str = "book";

@@ -77,6 +77,7 @@ impl FromHashMap for BibliographyType {
             T_IN_COLLECTION => Some(Box::new(Self::InCollection(*InCollection::from_hash_map(
                 map,
             )?))),
+            T_MANUAL => Some(Box::new(Self::Manual(*Manual::from_hash_map(map)?))),
             _ => None,
         }
     }

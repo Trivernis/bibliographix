@@ -1,4 +1,8 @@
-use crate::utils::date::LocalDate;
+use crate::bibliography::keys::{K_ADDRESS, K_AUTHOR, K_DATE, K_EDITION, K_ORGANIZATION, K_TITLE};
+use crate::bibliography::FromHashMap;
+use crate::utils::date::{parse_date, LocalDate};
+use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 
 /// A manual entry source
 #[derive(Clone, Debug)]
@@ -22,5 +26,32 @@ impl Manual {
             edition: None,
             date: None,
         }
+    }
+}
+
+impl FromHashMap for Manual {
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
+        let title = map.get(K_TITLE)?;
+        let mut manual = Manual::new(title.clone());
+
+        if let Some(author) = map.get(K_AUTHOR) {
+            manual.author = Some(author.clone());
+        }
+        if let Some(org) = map.get(K_ORGANIZATION) {
+            manual.organization = Some(org.clone());
+        }
+        if let Some(address) = map.get(K_ADDRESS) {
+            manual.address = Some(address.clone());
+        }
+        if let Some(edition) = map.get(K_EDITION) {
+            manual.edition = Some(edition.clone());
+        }
+        if let Some(date) = map.get(K_DATE) {
+            if let Some(date) = parse_date(date) {
+                manual.date = Some(date);
+            }
+        }
+
+        Some(Box::new(manual))
     }
 }
