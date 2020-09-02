@@ -72,6 +72,7 @@ impl FromHashMap for BibliographyType {
         match map.get(K_TYPE)?.as_str() {
             T_ARTICLE => Some(Box::new(Self::Article(*Article::from_hash_map(map)?))),
             T_BOOK => Some(Box::new(Self::Book(*Book::from_hash_map(map)?))),
+            T_BOOKLET => Some(Box::new(Self::Booklet(*Booklet::from_hash_map(map)?))),
             _ => None,
         }
     }

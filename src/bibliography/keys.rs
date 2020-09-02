@@ -14,6 +14,7 @@ pub const K_LICENSE: &str = "license";
 pub const K_NUMBER: &str = "number";
 pub const K_PAGES: &str = "pages";
 pub const K_NOTE: &str = "note";
+pub const K_HOW_PUBLISHED: &str = "how_published";
 
 pub const T_ARTICLE: &str = "article";
 pub const T_BOOK: &str = "book";
