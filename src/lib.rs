@@ -183,4 +183,16 @@ mod tests {
         let entry = BibliographyEntry::from_hash_map(&map).unwrap();
         assert_eq!(entry.bib_type.name(), "unpublished".to_string())
     }
+
+    #[test]
+    fn it_creates_websites_from_hashmaps() {
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "test_entry".to_string());
+        map.insert("type".to_string(), "website".to_string());
+        map.insert("url".to_string(), "https://github.com".to_string());
+        map.insert("note".to_string(), "This is a test".to_string());
+
+        let entry = BibliographyEntry::from_hash_map(&map).unwrap();
+        assert_eq!(entry.bib_type.name(), "website".to_string())
+    }
 }

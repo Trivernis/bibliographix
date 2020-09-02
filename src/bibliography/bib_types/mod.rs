@@ -85,6 +85,7 @@ impl FromHashMap for BibliographyType {
             T_UNPUBLISHED => Some(Box::new(Self::Unpublished(*Unpublished::from_hash_map(
                 map,
             )?))),
+            T_WEBSITE => Some(Box::new(Self::Website(*Website::from_hash_map(map)?))),
             _ => None,
         }
     }
