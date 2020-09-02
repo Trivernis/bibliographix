@@ -81,6 +81,7 @@ impl FromHashMap for BibliographyType {
             T_MISC => Some(Box::new(Self::Misc(*Misc::from_hash_map(map)?))),
             T_REPOSITORY => Some(Box::new(Self::Repository(*Repository::from_hash_map(map)?))),
             T_TECH_REPORT => Some(Box::new(Self::TechReport(*TechReport::from_hash_map(map)?))),
+            T_THESIS => Some(Box::new(Self::Thesis(*Thesis::from_hash_map(map)?))),
             _ => None,
         }
     }

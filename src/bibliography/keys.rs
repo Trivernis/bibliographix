@@ -21,6 +21,7 @@ pub const K_ORGANIZATION: &str = "organization";
 pub const K_CMS: &str = "cms";
 pub const K_ACCESSED_AT: &str = "accessed_at";
 pub const K_INSTITUTION: &str = "institution";
+pub const K_SCHOOL: &str = "school";
 
 pub const T_ARTICLE: &str = "article";
 pub const T_BOOK: &str = "book";

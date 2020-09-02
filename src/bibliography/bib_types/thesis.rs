@@ -1,4 +1,8 @@
-use crate::utils::date::LocalDate;
+use crate::bibliography::keys::{K_ADDRESS, K_AUTHOR, K_DATE, K_SCHOOL, K_TITLE};
+use crate::bibliography::FromHashMap;
+use crate::utils::date::{parse_date, LocalDate};
+use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 
 /// A thesis source entry
 #[derive(Clone, Debug)]
@@ -20,5 +24,19 @@ impl Thesis {
             date,
             address: None,
         }
+    }
+}
+
+impl FromHashMap for Thesis {
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
+        let author = map.get(K_AUTHOR)?;
+        let title = map.get(K_TITLE)?;
+        let school = map.get(K_SCHOOL)?;
+        let date = map.get(K_DATE).and_then(|d| parse_date(d))?;
+        let mut thesis = Thesis::new(author.clone(), title.clone(), school.clone(), date.clone());
+
+        thesis.address = map.get(K_ADDRESS).cloned();
+
+        Some(Box::new(thesis))
     }
 }
