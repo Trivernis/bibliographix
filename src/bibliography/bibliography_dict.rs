@@ -35,7 +35,7 @@ impl BibliographyDictionary {
     }
 
     /// Returns the reference to the bibliography entry with the given key
-    pub fn get(&mut self, key: &str) -> Option<BibliographyEntryReference> {
+    pub fn get(&self, key: &str) -> Option<BibliographyEntryReference> {
         self.entries.get(&key.to_string()).cloned()
     }
 }

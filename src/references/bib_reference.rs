@@ -12,7 +12,7 @@ pub struct BibRef {
 /// and to access the corresponding bibliography entry.
 #[derive(Clone, Debug)]
 pub struct BibRefAnchor {
-    entry: Option<BibliographyEntryReference>,
+    pub entry: Option<BibliographyEntryReference>,
 }
 
 impl BibRef {
@@ -27,5 +27,10 @@ impl BibRef {
     /// Returns the anchor of the BibRef
     pub fn anchor(&self) -> Arc<Mutex<BibRefAnchor>> {
         Arc::clone(&self.anchor)
+    }
+
+    /// Returns the key of the BibRef
+    pub fn key(&self) -> &String {
+        &self.key
     }
 }

@@ -32,6 +32,33 @@ mod tests {
     }
 
     #[test]
+    fn it_assigns_bib_entries_to_references() {
+        let manager = BibManager::new();
+        let ref1_1 = BibRef::new("ref1".to_string());
+        let anchor1 = ref1_1.anchor();
+        manager.root_ref_anchor().lock().unwrap().insert(ref1_1);
+        let ref1_2 = BibRef::new("ref1".to_string());
+        let anchor2 = ref1_2.anchor();
+        manager.root_ref_anchor().lock().unwrap().insert(ref1_2);
+        let ref3 = BibRef::new("ref2".to_string());
+        let anchor3 = ref3.anchor();
+        manager.root_ref_anchor().lock().unwrap().insert(ref3);
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "ref1".to_string());
+        map.insert("type".to_string(), "article".to_string());
+        map.insert("author".to_string(), "test".to_string());
+        map.insert("title".to_string(), "test_title".to_string());
+        map.insert("journal".to_string(), "test_journal".to_string());
+        map.insert("date".to_string(), "01.09.2020".to_string());
+        manager.entry_dictionary().lock().unwrap().insert_map(&map);
+        manager.assign_entries_to_references();
+
+        assert!(anchor1.lock().unwrap().entry.is_some());
+        assert!(anchor2.lock().unwrap().entry.is_some());
+        assert!(anchor3.lock().unwrap().entry.is_none());
+    }
+
+    #[test]
     fn it_creates_articles_from_hashmaps() {
         let mut map: HashMap<String, String> = HashMap::new();
         map.insert("key".to_string(), "test_entry".to_string());

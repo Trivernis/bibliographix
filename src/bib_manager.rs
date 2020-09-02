@@ -28,4 +28,17 @@ impl BibManager {
     pub fn entry_dictionary(&self) -> Arc<Mutex<BibliographyDictionary>> {
         Arc::clone(&self.entry_dictionary)
     }
+
+    /// Assigns the corresponding bib entry to each bib reference
+    pub fn assign_entries_to_references(&self) {
+        let entry_dict = self.entry_dictionary.lock().unwrap();
+        let mut root_anchor = self.root_ref_anchor.lock().unwrap();
+        root_anchor.flatten();
+        let entries = root_anchor.references();
+        entries.iter().for_each(|e| {
+            if let Some(bib) = entry_dict.get(e.key()) {
+                e.anchor().lock().unwrap().entry = Some(bib)
+            }
+        })
+    }
 }
