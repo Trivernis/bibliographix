@@ -127,4 +127,17 @@ mod tests {
         let entry = BibliographyEntry::from_hash_map(&map).unwrap();
         assert_eq!(entry.bib_type.name(), "misc".to_string())
     }
+
+    #[test]
+    fn it_creates_repos_from_hashmaps() {
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "test_entry".to_string());
+        map.insert("type".to_string(), "repository".to_string());
+        map.insert("author".to_string(), "trivernis".to_string());
+        map.insert("title".to_string(), "snekdown".to_string());
+        map.insert("note".to_string(), "This is a test".to_string());
+
+        let entry = BibliographyEntry::from_hash_map(&map).unwrap();
+        assert_eq!(entry.bib_type.name(), "repository".to_string())
+    }
 }

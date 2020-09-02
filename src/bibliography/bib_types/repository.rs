@@ -1,4 +1,8 @@
-use crate::utils::date::LocalDate;
+use crate::bibliography::keys::{K_ACCESSED_AT, K_AUTHOR, K_CMS, K_LICENSE, K_TITLE, K_URL};
+use crate::bibliography::FromHashMap;
+use crate::utils::date::{parse_date, LocalDate};
+use std::collections::hash_map::RandomState;
+use std::collections::HashMap;
 
 /// A repository source that represents any git repository or similar
 /// structures
@@ -23,5 +27,20 @@ impl Repository {
             cms: None,
             accessed_at: None,
         }
+    }
+}
+
+impl FromHashMap for Repository {
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
+        let author = map.get(K_AUTHOR)?;
+        let title = map.get(K_TITLE)?;
+        let mut repo = Repository::new(author.clone(), title.clone());
+
+        repo.url = map.get(K_URL).cloned();
+        repo.license = map.get(K_LICENSE).cloned();
+        repo.cms = map.get(K_CMS).cloned();
+        repo.accessed_at = map.get(K_ACCESSED_AT).and_then(|d| parse_date(d));
+
+        Some(Box::new(repo))
     }
 }
