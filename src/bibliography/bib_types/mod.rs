@@ -10,6 +10,10 @@ use crate::bibliography::bib_types::tech_report::TechReport;
 use crate::bibliography::bib_types::thesis::Thesis;
 use crate::bibliography::bib_types::unpublished::Unpublished;
 use crate::bibliography::bib_types::website::Website;
+use crate::bibliography::keys::{
+    K_TYPE, T_ARTICLE, T_BOOK, T_BOOKLET, T_IN_BOOK, T_IN_COLLECTION, T_MANUAL, T_MISC,
+    T_REPOSITORY, T_TECH_REPORT, T_THESIS, T_UNPUBLISHED, T_WEBSITE,
+};
 use crate::bibliography::FromHashMap;
 use std::collections::HashMap;
 
@@ -47,31 +51,28 @@ impl BibliographyType {
     /// Returns the name of the enums value as a string
     pub fn name(&self) -> String {
         match self {
-            Self::Article(_) => "article".to_string(),
-            Self::Book(_) => "book".to_string(),
-            Self::Booklet(_) => "booklet".to_string(),
-            Self::InBook(_) => "in_book".to_string(),
-            Self::InCollection(_) => "in_collection".to_string(),
-            Self::Manual(_) => "manual".to_string(),
-            Self::Thesis(_) => "thesis".to_string(),
-            Self::TechReport(_) => "tech_report".to_string(),
-            Self::Unpublished(_) => "unpublished".to_string(),
-            Self::Misc(_) => "misc".to_string(),
-            Self::Website(_) => "website".to_string(),
-            Self::Repository(_) => "repository".to_string(),
+            Self::Article(_) => T_ARTICLE.to_string(),
+            Self::Book(_) => T_BOOK.to_string(),
+            Self::Booklet(_) => T_BOOKLET.to_string(),
+            Self::InBook(_) => T_IN_BOOK.to_string(),
+            Self::InCollection(_) => T_IN_COLLECTION.to_string(),
+            Self::Manual(_) => T_MANUAL.to_string(),
+            Self::Thesis(_) => T_THESIS.to_string(),
+            Self::TechReport(_) => T_TECH_REPORT.to_string(),
+            Self::Unpublished(_) => T_UNPUBLISHED.to_string(),
+            Self::Misc(_) => T_MISC.to_string(),
+            Self::Website(_) => T_WEBSITE.to_string(),
+            Self::Repository(_) => T_REPOSITORY.to_string(),
         }
     }
 }
 
 impl FromHashMap for BibliographyType {
     fn from_hash_map(map: &HashMap<String, String>) -> Option<Box<Self>> {
-        if map.contains_key("type") {
-            match map.get("type").unwrap().as_str() {
-                "article" => Some(Box::new(Self::Article(*Article::from_hash_map(map)?))),
-                _ => None,
-            }
-        } else {
-            None
+        match map.get(K_TYPE)?.as_str() {
+            T_ARTICLE => Some(Box::new(Self::Article(*Article::from_hash_map(map)?))),
+            T_BOOK => Some(Box::new(Self::Book(*Book::from_hash_map(map)?))),
+            _ => None,
         }
     }
 }

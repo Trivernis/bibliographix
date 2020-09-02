@@ -1,5 +1,6 @@
 use crate::bibliography::bib_types::misc::Misc;
 use crate::bibliography::bib_types::BibliographyType;
+use crate::bibliography::keys::{K_KEY, K_NOTE};
 use crate::bibliography::FromHashMap;
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
@@ -35,22 +36,17 @@ impl BibliographyEntry {
 
 impl FromHashMap for BibliographyEntry {
     fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        if let Some(key) = map.get("key") {
-            if let Some(bib_type) = BibliographyType::from_hash_map(map) {
-                let mut entry = Self::new(key.clone());
+        let key = map.get(K_KEY)?;
+        let bib_type = BibliographyType::from_hash_map(map)?;
 
-                if let Some(note) = map.get("note") {
-                    entry.note = Some(note.clone())
-                }
-                entry.bib_type = *bib_type;
-                entry.raw_fields = map.clone();
+        let mut entry = Self::new(key.clone());
 
-                Some(Box::new(entry))
-            } else {
-                None
-            }
-        } else {
-            None
+        if let Some(note) = map.get(K_NOTE) {
+            entry.note = Some(note.clone())
         }
+        entry.bib_type = *bib_type;
+        entry.raw_fields = map.clone();
+
+        Some(Box::new(entry))
     }
 }
