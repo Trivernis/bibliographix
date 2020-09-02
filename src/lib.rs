@@ -140,4 +140,19 @@ mod tests {
         let entry = BibliographyEntry::from_hash_map(&map).unwrap();
         assert_eq!(entry.bib_type.name(), "repository".to_string())
     }
+
+    #[test]
+    fn it_creates_tech_reports_from_hashmaps() {
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "test_entry".to_string());
+        map.insert("type".to_string(), "tech_report".to_string());
+        map.insert("author".to_string(), "test".to_string());
+        map.insert("title".to_string(), "test tech".to_string());
+        map.insert("institution".to_string(), "test".to_string());
+        map.insert("note".to_string(), "This is a test".to_string());
+        map.insert("date".to_string(), "02.09.2020".to_string());
+
+        let entry = BibliographyEntry::from_hash_map(&map).unwrap();
+        assert_eq!(entry.bib_type.name(), "tech_report".to_string())
+    }
 }
