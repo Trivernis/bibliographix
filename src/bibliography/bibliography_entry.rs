@@ -41,9 +41,7 @@ impl FromHashMap for BibliographyEntry {
 
         let mut entry = Self::new(key.clone());
 
-        if let Some(note) = map.get(K_NOTE) {
-            entry.note = Some(note.clone())
-        }
+        entry.note = map.get(K_NOTE).cloned();
         entry.bib_type = *bib_type;
         entry.raw_fields = map.clone();
 
