@@ -78,6 +78,7 @@ impl FromHashMap for BibliographyType {
                 map,
             )?))),
             T_MANUAL => Some(Box::new(Self::Manual(*Manual::from_hash_map(map)?))),
+            T_MISC => Some(Box::new(Self::Misc(*Misc::from_hash_map(map)?))),
             _ => None,
         }
     }

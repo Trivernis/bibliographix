@@ -116,4 +116,15 @@ mod tests {
         let entry = BibliographyEntry::from_hash_map(&map).unwrap();
         assert_eq!(entry.bib_type.name(), "manual".to_string())
     }
+
+    #[test]
+    fn it_creates_misc_from_hashmaps() {
+        let mut map: HashMap<String, String> = HashMap::new();
+        map.insert("key".to_string(), "test_entry".to_string());
+        map.insert("type".to_string(), "misc".to_string());
+        map.insert("note".to_string(), "This is a test".to_string());
+
+        let entry = BibliographyEntry::from_hash_map(&map).unwrap();
+        assert_eq!(entry.bib_type.name(), "misc".to_string())
+    }
 }

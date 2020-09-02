@@ -43,13 +43,11 @@ impl FromHashMap for Manual {
         if let Some(address) = map.get(K_ADDRESS) {
             manual.address = Some(address.clone());
         }
-        if let Some(edition) = map.get(K_EDITION) {
-            manual.edition = Some(edition.clone());
+        if let Some(edition) = map.get(K_EDITION).and_then(|s| Some(s.clone())) {
+            Some(edition.clone());
         }
         if let Some(date) = map.get(K_DATE) {
-            if let Some(date) = parse_date(date) {
-                manual.date = Some(date);
-            }
+            manual.date = parse_date(date);
         }
 
         Some(Box::new(manual))
