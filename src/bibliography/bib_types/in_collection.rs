@@ -48,14 +48,10 @@ impl FromHashMap for InCollection {
         let date = parse_date(map.get(K_DATE)?)?;
         let mut in_col = InCollection::new(author.clone(), title.clone(), publisher.clone(), date);
 
-        if let Some(editor) = map.get(K_EDITOR) {
-            in_col.editor = Some(editor.clone());
-        }
-        if let Some(volume) = map.get(K_VOLUME) {
-            in_col.volume = Some(volume.clone());
-        }
+        in_col.editor = map.get(K_EDITOR).cloned();
+        in_col.volume = map.get(K_VOLUME).cloned();
         if let Some(series) = map.get(K_SERIES) {
-            in_col.series = Some(series.clone());
+            Some(series.clone());
         }
         if let Some(position) = map.get(K_POSITION) {
             in_col.position = Some(position.clone());

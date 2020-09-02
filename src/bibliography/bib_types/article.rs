@@ -43,18 +43,11 @@ impl FromHashMap for Article {
         let date = parse_date(map.get(K_DATE)?)?;
         let mut article = Self::new(author.clone(), title.clone(), journal.clone(), date);
 
-        if let Some(volume) = map.get(K_VOLUME) {
-            article.volume = Some(volume.clone());
-        }
-        if let Some(number) = map.get(K_NUMBER) {
-            article.number = Some(number.clone());
-        }
-        if let Some(pages) = map.get(K_PAGES) {
-            article.pages = Some(pages.clone());
-        }
-        if let Some(url) = map.get(K_URL) {
-            article.url = Some(url.clone());
-        }
+        article.volume = map.get(K_VOLUME).cloned();
+        article.number = map.get(K_NUMBER).cloned();
+        article.number = map.get(K_NUMBER).cloned();
+        article.pages = map.get(K_PAGES).cloned();
+        article.url = map.get(K_URL).cloned();
 
         Some(Box::new(article))
     }

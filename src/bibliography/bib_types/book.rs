@@ -44,21 +44,11 @@ impl FromHashMap for Book {
         let date = parse_date(map.get(K_DATE)?)?;
         let mut book = Book::new(author.clone(), title.clone(), publisher.clone(), date);
 
-        if let Some(volume) = map.get(K_VOLUME) {
-            book.volume = Some(volume.clone());
-        }
-        if let Some(series) = map.get(K_SERIES) {
-            book.series = Some(series.clone());
-        }
-        if let Some(address) = map.get(K_ADDRESS) {
-            book.address = Some(address.clone());
-        }
-        if let Some(edition) = map.get(K_EDITION) {
-            book.edition = Some(edition.clone());
-        }
-        if let Some(url) = map.get(K_URL) {
-            book.url = Some(url.clone());
-        }
+        book.volume = map.get(K_VOLUME).cloned();
+        book.series = map.get(K_SERIES).cloned();
+        book.address = map.get(K_ADDRESS).cloned();
+        book.edition = map.get(K_EDITION).cloned();
+        book.url = map.get(K_URL).cloned();
 
         Some(Box::new(book))
     }

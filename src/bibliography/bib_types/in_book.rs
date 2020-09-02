@@ -58,18 +58,10 @@ impl FromHashMap for InBook {
             date,
         );
 
-        if let Some(volume) = map.get(K_VOLUME) {
-            in_book.volume = Some(volume.clone());
-        }
-        if let Some(series) = map.get(K_SERIES) {
-            in_book.series = Some(series.clone());
-        }
-        if let Some(address) = map.get(K_ADDRESS) {
-            in_book.address = Some(address.clone());
-        }
-        if let Some(edition) = map.get(K_EDITION) {
-            in_book.edition = Some(edition.clone())
-        }
+        in_book.volume = map.get(K_VOLUME).cloned();
+        in_book.series = map.get(K_SERIES).cloned();
+        in_book.address = map.get(K_ADDRESS).cloned();
+        in_book.edition = map.get(K_EDITION).cloned();
 
         Some(Box::new(in_book))
     }

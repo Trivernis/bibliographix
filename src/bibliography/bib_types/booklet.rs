@@ -32,18 +32,10 @@ impl FromHashMap for Booklet {
         let title = map.get(K_TITLE)?;
         let mut booklet = Booklet::new(title.clone());
 
-        if let Some(author) = map.get(K_AUTHOR) {
-            booklet.author = Some(author.clone())
-        }
-        if let Some(how_published) = map.get(K_HOW_PUBLISHED) {
-            booklet.how_published = Some(how_published.clone());
-        }
-        if let Some(address) = map.get(K_ADDRESS) {
-            booklet.address = Some(address.clone());
-        }
-        if let Some(date) = map.get(K_DATE) {
-            booklet.date = parse_date(date);
-        }
+        booklet.author = map.get(K_AUTHOR).cloned();
+        booklet.how_published = map.get(K_HOW_PUBLISHED).cloned();
+        booklet.address = map.get(K_ADDRESS).cloned();
+        booklet.date = map.get(K_DATE).and_then(|d| parse_date(d));
 
         Some(Box::new(booklet))
     }

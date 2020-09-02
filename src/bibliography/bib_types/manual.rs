@@ -34,21 +34,11 @@ impl FromHashMap for Manual {
         let title = map.get(K_TITLE)?;
         let mut manual = Manual::new(title.clone());
 
-        if let Some(author) = map.get(K_AUTHOR) {
-            manual.author = Some(author.clone());
-        }
-        if let Some(org) = map.get(K_ORGANIZATION) {
-            manual.organization = Some(org.clone());
-        }
-        if let Some(address) = map.get(K_ADDRESS) {
-            manual.address = Some(address.clone());
-        }
-        if let Some(edition) = map.get(K_EDITION).and_then(|s| Some(s.clone())) {
-            Some(edition.clone());
-        }
-        if let Some(date) = map.get(K_DATE) {
-            manual.date = parse_date(date);
-        }
+        manual.author = map.get(K_AUTHOR).cloned();
+        manual.organization = map.get(K_ORGANIZATION).cloned();
+        manual.address = map.get(K_ADDRESS).cloned();
+        manual.edition = map.get(K_EDITION).cloned();
+        manual.date = map.get(K_DATE).and_then(|d| parse_date(d));
 
         Some(Box::new(manual))
     }
