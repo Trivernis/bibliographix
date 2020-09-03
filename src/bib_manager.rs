@@ -1,4 +1,5 @@
 use crate::bibliography::bibliography_dict::BibliographyDictionary;
+use crate::bibliography::bibliography_entry::BibliographyEntryReference;
 use crate::references::anchor::BibListAnchor;
 use std::sync::{Arc, Mutex};
 
@@ -51,5 +52,19 @@ impl BibManager {
                 e.anchor().lock().unwrap().entry = Some(bib)
             }
         })
+    }
+
+    /// Returns the list of bibliography entries ordered by first referenced
+    pub fn get_entry_list_by_occurrence(&self) -> Vec<BibliographyEntryReference> {
+        let mut entries = Vec::new();
+        let entry_dict = self.entry_dictionary.lock().unwrap();
+
+        for bib_ref in self.root_ref_anchor.lock().unwrap().references() {
+            if let Some(bib_entry) = entry_dict.get(bib_ref.key()) {
+                entries.push(bib_entry);
+            }
+        }
+
+        entries
     }
 }
