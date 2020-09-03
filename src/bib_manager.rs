@@ -24,6 +24,17 @@ impl BibManager {
         Arc::clone(&self.root_ref_anchor)
     }
 
+    /// Creates a new child BibManager with a child anchor and the parents entry dict
+    pub fn create_child(&self) -> BibManager {
+        let anchor = self.root_ref_anchor.lock().unwrap().create_anchor();
+        let entry_dict = Arc::clone(&self.entry_dictionary);
+
+        Self {
+            entry_dictionary: entry_dict,
+            root_ref_anchor: anchor,
+        }
+    }
+
     /// Returns the reference to the entry dictionary
     pub fn entry_dictionary(&self) -> Arc<Mutex<BibliographyDictionary>> {
         Arc::clone(&self.entry_dictionary)
