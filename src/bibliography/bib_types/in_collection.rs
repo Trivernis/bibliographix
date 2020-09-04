@@ -10,16 +10,16 @@ use std::collections::HashMap;
 /// A source that is in a collection
 #[derive(Clone, Debug)]
 pub struct InCollection {
-    author: String,
-    title: String,
-    publisher: String,
-    date: LocalDate,
-    editor: Option<String>,
-    volume: Option<String>,
-    series: Option<String>,
-    position: Option<String>,
-    address: Option<String>,
-    edition: Option<String>,
+    pub author: String,
+    pub title: String,
+    pub publisher: String,
+    pub date: LocalDate,
+    pub editor: Option<String>,
+    pub volume: Option<String>,
+    pub series: Option<String>,
+    pub position: Option<String>,
+    pub address: Option<String>,
+    pub edition: Option<String>,
 }
 
 impl InCollection {
