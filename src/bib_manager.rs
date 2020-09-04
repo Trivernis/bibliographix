@@ -1,7 +1,14 @@
 use crate::bibliography::bibliography_dict::BibliographyDictionary;
-use crate::bibliography::bibliography_entry::BibliographyEntryReference;
+use crate::bibliography::bibliography_entry::{BibliographyEntry, BibliographyEntryReference};
+use crate::bibliography::keys::K_KEY;
+use crate::bibliography::FromHashMap;
 use crate::references::anchor::BibListAnchor;
+use std::collections::HashMap;
+use std::io;
+use std::io::BufRead;
+use std::iter::FromIterator;
 use std::sync::{Arc, Mutex};
+use toml::Value;
 
 /// The root manager for that should be used for further reference operations that
 /// go beyond insertion.
@@ -70,5 +77,37 @@ impl BibManager {
         }
 
         entries
+    }
+
+    /// Reads a toml bibliography file and inserts each entry into the dictionary
+    pub fn read_bib_file(&self, reader: &mut impl BufRead) -> io::Result<()> {
+        let mut contents = String::new();
+        reader.read_to_string(&mut contents)?;
+        let bib_content = contents.parse::<Value>()?;
+        let mut entry_dict = self.entry_dictionary.lock().unwrap();
+
+        if let Some(table) = bib_content.as_table() {
+            let mut entries = table
+                .iter()
+                .filter_map(|(k, v)| {
+                    let entry_iter = v
+                        .as_table()?
+                        .iter()
+                        .filter_map(|(k, v)| Some((k.clone(), v.as_str()?.to_string())));
+
+                    let mut entry_map: HashMap<String, String> = HashMap::from_iter(entry_iter);
+
+                    entry_map.insert(K_KEY.to_string(), k.clone());
+
+                    Some(*BibliographyEntry::from_hash_map(&entry_map)?)
+                })
+                .collect::<Vec<BibliographyEntry>>();
+
+            while let Some(entry) = entries.pop() {
+                entry_dict.insert(entry)
+            }
+        }
+
+        Ok(())
     }
 }
