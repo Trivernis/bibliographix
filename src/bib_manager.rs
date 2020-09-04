@@ -57,11 +57,15 @@ impl BibManager {
     /// Returns the list of bibliography entries ordered by first referenced
     pub fn get_entry_list_by_occurrence(&self) -> Vec<BibliographyEntryReference> {
         let mut entries = Vec::new();
+        let mut inserted_keys = Vec::new();
         let entry_dict = self.entry_dictionary.lock().unwrap();
 
         for bib_ref in self.root_ref_anchor.lock().unwrap().references() {
             if let Some(bib_entry) = entry_dict.get(bib_ref.key()) {
-                entries.push(bib_entry);
+                if !inserted_keys.contains(bib_ref.key()) {
+                    entries.push(bib_entry);
+                    inserted_keys.push(bib_ref.key().clone())
+                }
             }
         }
 
