@@ -41,28 +41,20 @@ impl InCollection {
 }
 
 impl FromHashMap for InCollection {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
-        let publisher = map.get(K_PUBLISHER)?;
-        let date = parse_date(map.get(K_DATE)?)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
+        let publisher = map.get(K_PUBLISHER).ok_or(missing_field!(K_PUBLISHER))?;
+        let date = parse_date(map.get(K_DATE).ok_or(missing_field!(K_DATE))?)?;
         let mut in_col = InCollection::new(author.clone(), title.clone(), publisher.clone(), date);
 
         in_col.editor = map.get(K_EDITOR).cloned();
         in_col.volume = map.get(K_VOLUME).cloned();
-        if let Some(series) = map.get(K_SERIES) {
-            Some(series.clone());
-        }
-        if let Some(position) = map.get(K_POSITION) {
-            in_col.position = Some(position.clone());
-        }
-        if let Some(address) = map.get(K_ADDRESS) {
-            in_col.address = Some(address.clone());
-        }
-        if let Some(edition) = map.get(K_EDITION) {
-            in_col.edition = Some(edition.clone());
-        }
+        in_col.series = map.get(K_SERIES).cloned();
+        in_col.position = map.get(K_POSITION).cloned();
+        in_col.address = map.get(K_ADDRESS).cloned();
+        in_col.edition = map.get(K_EDITION).cloned();
 
-        Some(Box::new(in_col))
+        Ok(Box::new(in_col))
     }
 }

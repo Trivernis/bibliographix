@@ -25,13 +25,13 @@ impl BibliographyDictionary {
     }
 
     /// Inserts a bibliography entry represented as a HashMap
-    pub fn insert_map(&mut self, map: &HashMap<String, String>) -> Option<()> {
-        let key = map.get(K_KEY)?;
+    pub fn insert_map(&mut self, map: &HashMap<String, String>) -> Result<(), String> {
+        let key = map.get(K_KEY).ok_or(missing_field!(K_KEY))?;
         let entry = *BibliographyEntry::from_hash_map(map)?;
         self.entries
             .insert(key.clone(), Arc::new(Mutex::new(entry)));
 
-        Some(())
+        Ok(())
     }
 
     /// Returns the reference to the bibliography entry with the given key

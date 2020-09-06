@@ -37,11 +37,11 @@ impl Book {
 }
 
 impl FromHashMap for Book {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
-        let publisher = map.get(K_PUBLISHER)?;
-        let date = parse_date(map.get(K_DATE)?)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
+        let publisher = map.get(K_PUBLISHER).ok_or(missing_field!(K_PUBLISHER))?;
+        let date = parse_date(map.get(K_DATE).ok_or(missing_field!(K_DATE))?)?;
         let mut book = Book::new(author.clone(), title.clone(), publisher.clone(), date);
 
         book.volume = map.get(K_VOLUME).cloned();
@@ -50,6 +50,6 @@ impl FromHashMap for Book {
         book.edition = map.get(K_EDITION).cloned();
         book.url = map.get(K_URL).cloned();
 
-        Some(Box::new(book))
+        Ok(Box::new(book))
     }
 }

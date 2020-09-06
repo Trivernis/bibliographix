@@ -24,13 +24,13 @@ impl Unpublished {
 }
 
 impl FromHashMap for Unpublished {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
         let mut unpub = Unpublished::new(author.clone(), title.clone());
 
-        unpub.date = map.get(K_DATE).and_then(|d| parse_date(d));
+        unpub.date = map.get(K_DATE).and_then(|d| parse_date(d).ok());
 
-        Some(Box::new(unpub))
+        Ok(Box::new(unpub))
     }
 }

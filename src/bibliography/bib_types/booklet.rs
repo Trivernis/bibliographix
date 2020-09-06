@@ -28,15 +28,19 @@ impl Booklet {
 }
 
 impl FromHashMap for Booklet {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let title = map.get(K_TITLE)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
         let mut booklet = Booklet::new(title.clone());
 
         booklet.author = map.get(K_AUTHOR).cloned();
         booklet.how_published = map.get(K_HOW_PUBLISHED).cloned();
         booklet.address = map.get(K_ADDRESS).cloned();
-        booklet.date = map.get(K_DATE).and_then(|d| parse_date(d));
+        booklet.date = map
+            .get(K_DATE)
+            .ok_or(missing_field!(K_DATE))
+            .and_then(|d| parse_date(d))
+            .ok();
 
-        Some(Box::new(booklet))
+        Ok(Box::new(booklet))
     }
 }

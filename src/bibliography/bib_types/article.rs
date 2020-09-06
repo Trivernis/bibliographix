@@ -36,11 +36,11 @@ impl Article {
 }
 
 impl FromHashMap for Article {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
-        let journal = map.get(K_JOURNAL)?;
-        let date = parse_date(map.get(K_DATE)?)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
+        let journal = map.get(K_JOURNAL).ok_or(missing_field!(K_JOURNAL))?;
+        let date = parse_date(map.get(K_DATE).ok_or(missing_field!(K_DATE))?)?;
         let mut article = Self::new(author.clone(), title.clone(), journal.clone(), date);
 
         article.volume = map.get(K_VOLUME).cloned();
@@ -49,6 +49,6 @@ impl FromHashMap for Article {
         article.pages = map.get(K_PAGES).cloned();
         article.url = map.get(K_URL).cloned();
 
-        Some(Box::new(article))
+        Ok(Box::new(article))
     }
 }

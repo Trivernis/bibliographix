@@ -68,25 +68,25 @@ impl BibliographyType {
 }
 
 impl FromHashMap for BibliographyType {
-    fn from_hash_map(map: &HashMap<String, String>) -> Option<Box<Self>> {
-        match map.get(K_TYPE)?.as_str() {
-            T_ARTICLE => Some(Box::new(Self::Article(*Article::from_hash_map(map)?))),
-            T_BOOK => Some(Box::new(Self::Book(*Book::from_hash_map(map)?))),
-            T_BOOKLET => Some(Box::new(Self::Booklet(*Booklet::from_hash_map(map)?))),
-            T_IN_BOOK => Some(Box::new(Self::InBook(*InBook::from_hash_map(map)?))),
-            T_IN_COLLECTION => Some(Box::new(Self::InCollection(*InCollection::from_hash_map(
+    fn from_hash_map(map: &HashMap<String, String>) -> Result<Box<Self>, String> {
+        match map.get(K_TYPE).ok_or(missing_field!(K_TYPE))?.as_str() {
+            T_ARTICLE => Ok(Box::new(Self::Article(*Article::from_hash_map(map)?))),
+            T_BOOK => Ok(Box::new(Self::Book(*Book::from_hash_map(map)?))),
+            T_BOOKLET => Ok(Box::new(Self::Booklet(*Booklet::from_hash_map(map)?))),
+            T_IN_BOOK => Ok(Box::new(Self::InBook(*InBook::from_hash_map(map)?))),
+            T_IN_COLLECTION => Ok(Box::new(Self::InCollection(*InCollection::from_hash_map(
                 map,
             )?))),
-            T_MANUAL => Some(Box::new(Self::Manual(*Manual::from_hash_map(map)?))),
-            T_MISC => Some(Box::new(Self::Misc(*Misc::from_hash_map(map)?))),
-            T_REPOSITORY => Some(Box::new(Self::Repository(*Repository::from_hash_map(map)?))),
-            T_TECH_REPORT => Some(Box::new(Self::TechReport(*TechReport::from_hash_map(map)?))),
-            T_THESIS => Some(Box::new(Self::Thesis(*Thesis::from_hash_map(map)?))),
-            T_UNPUBLISHED => Some(Box::new(Self::Unpublished(*Unpublished::from_hash_map(
+            T_MANUAL => Ok(Box::new(Self::Manual(*Manual::from_hash_map(map)?))),
+            T_MISC => Ok(Box::new(Self::Misc(*Misc::from_hash_map(map)?))),
+            T_REPOSITORY => Ok(Box::new(Self::Repository(*Repository::from_hash_map(map)?))),
+            T_TECH_REPORT => Ok(Box::new(Self::TechReport(*TechReport::from_hash_map(map)?))),
+            T_THESIS => Ok(Box::new(Self::Thesis(*Thesis::from_hash_map(map)?))),
+            T_UNPUBLISHED => Ok(Box::new(Self::Unpublished(*Unpublished::from_hash_map(
                 map,
             )?))),
-            T_WEBSITE => Some(Box::new(Self::Website(*Website::from_hash_map(map)?))),
-            _ => None,
+            T_WEBSITE => Ok(Box::new(Self::Website(*Website::from_hash_map(map)?))),
+            _ => Err(format!("Unknown type")),
         }
     }
 }

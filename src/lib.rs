@@ -50,7 +50,12 @@ mod tests {
         map.insert("title".to_string(), "test_title".to_string());
         map.insert("journal".to_string(), "test_journal".to_string());
         map.insert("date".to_string(), "01.09.2020".to_string());
-        manager.entry_dictionary().lock().unwrap().insert_map(&map);
+        manager
+            .entry_dictionary()
+            .lock()
+            .unwrap()
+            .insert_map(&map)
+            .unwrap();
         manager.assign_entries_to_references();
 
         assert!(anchor1.lock().unwrap().entry.is_some());

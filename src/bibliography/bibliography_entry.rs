@@ -35,8 +35,8 @@ impl BibliographyEntry {
 }
 
 impl FromHashMap for BibliographyEntry {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let key = map.get(K_KEY)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let key = map.get(K_KEY).ok_or(missing_field!(K_KEY))?;
         let bib_type = BibliographyType::from_hash_map(map)?;
 
         let mut entry = Self::new(key.clone());
@@ -45,6 +45,6 @@ impl FromHashMap for BibliographyEntry {
         entry.bib_type = *bib_type;
         entry.raw_fields = map.clone();
 
-        Some(Box::new(entry))
+        Ok(Box::new(entry))
     }
 }

@@ -30,17 +30,22 @@ impl TechReport {
 }
 
 impl FromHashMap for TechReport {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
-        let institution = map.get(K_INSTITUTION)?;
-        let date = map.get(K_DATE).and_then(|d| parse_date(d))?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
+        let institution = map
+            .get(K_INSTITUTION)
+            .ok_or(missing_field!(K_INSTITUTION))?;
+        let date = map
+            .get(K_DATE)
+            .ok_or(missing_field!(K_DATE))
+            .and_then(|d| parse_date(d))?;
         let mut tech_report =
             TechReport::new(author.clone(), title.clone(), institution.clone(), date);
 
         tech_report.number = map.get(K_NUMBER).cloned();
         tech_report.address = map.get(K_ADDRESS).cloned();
 
-        Some(Box::new(tech_report))
+        Ok(Box::new(tech_report))
     }
 }

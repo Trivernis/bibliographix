@@ -28,15 +28,15 @@ impl Website {
 }
 
 impl FromHashMap for Website {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let url = map.get(K_URL)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let url = map.get(K_URL).ok_or(missing_field!(K_URL))?;
         let mut website = Website::new(url.clone());
 
         website.title = map.get(K_TITLE).cloned();
         website.author = map.get(K_AUTHOR).cloned();
-        website.accessed_at = map.get(K_ACCESSED_AT).and_then(|d| parse_date(d));
-        website.date = map.get(K_DATE).and_then(|d| parse_date(d));
+        website.accessed_at = map.get(K_ACCESSED_AT).and_then(|d| parse_date(d).ok());
+        website.date = map.get(K_DATE).and_then(|d| parse_date(d).ok());
 
-        Some(Box::new(website))
+        Ok(Box::new(website))
     }
 }

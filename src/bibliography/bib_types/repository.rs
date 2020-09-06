@@ -31,16 +31,20 @@ impl Repository {
 }
 
 impl FromHashMap for Repository {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
         let mut repo = Repository::new(author.clone(), title.clone());
 
         repo.url = map.get(K_URL).cloned();
         repo.license = map.get(K_LICENSE).cloned();
         repo.cms = map.get(K_CMS).cloned();
-        repo.accessed_at = map.get(K_ACCESSED_AT).and_then(|d| parse_date(d));
+        repo.accessed_at = map
+            .get(K_ACCESSED_AT)
+            .ok_or(missing_field!(K_ACCESSED_AT))
+            .and_then(|d| parse_date(d))
+            .ok();
 
-        Some(Box::new(repo))
+        Ok(Box::new(repo))
     }
 }

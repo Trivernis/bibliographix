@@ -99,7 +99,7 @@ impl BibManager {
 
                     entry_map.insert(K_KEY.to_string(), k.clone());
 
-                    Some(*BibliographyEntry::from_hash_map(&entry_map)?)
+                    Some(*BibliographyEntry::from_hash_map(&entry_map).ok()?)
                 })
                 .collect::<Vec<BibliographyEntry>>();
 

@@ -1,5 +1,5 @@
 use crate::bibliography::keys::{
-    K_ADDRESS, K_AUTHOR, K_DATE, K_EDITION, K_PUBLISHER, K_SERIES, K_TITLE, K_VOLUME,
+    K_ADDRESS, K_AUTHOR, K_DATE, K_EDITION, K_POSITION, K_PUBLISHER, K_SERIES, K_TITLE, K_VOLUME,
 };
 use crate::bibliography::FromHashMap;
 use crate::utils::date::{parse_date, LocalDate};
@@ -44,12 +44,12 @@ impl InBook {
 }
 
 impl FromHashMap for InBook {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let author = map.get(K_AUTHOR)?;
-        let title = map.get(K_TITLE)?;
-        let position = map.get(K_TITLE)?;
-        let publisher = map.get(K_PUBLISHER)?;
-        let date = parse_date(map.get(K_DATE)?)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let author = map.get(K_AUTHOR).ok_or(missing_field!(K_AUTHOR))?;
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
+        let position = map.get(K_POSITION).ok_or(missing_field!(K_POSITION))?;
+        let publisher = map.get(K_PUBLISHER).ok_or(missing_field!(K_PUBLISHER))?;
+        let date = parse_date(map.get(K_DATE).ok_or(missing_field!(K_DATE))?)?;
         let mut in_book = InBook::new(
             author.clone(),
             title.clone(),
@@ -63,6 +63,6 @@ impl FromHashMap for InBook {
         in_book.address = map.get(K_ADDRESS).cloned();
         in_book.edition = map.get(K_EDITION).cloned();
 
-        Some(Box::new(in_book))
+        Ok(Box::new(in_book))
     }
 }

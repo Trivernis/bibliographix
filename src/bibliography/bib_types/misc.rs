@@ -28,15 +28,19 @@ impl Misc {
 }
 
 impl FromHashMap for Misc {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
         let mut misc = Misc::new();
 
         misc.author = map.get(K_AUTHOR).cloned();
         misc.title = map.get(K_TITLE).cloned();
         misc.url = map.get(K_URL).cloned();
         misc.how_published = map.get(K_HOW_PUBLISHED).cloned();
-        misc.date = map.get(K_DATE).and_then(|d| parse_date(d));
+        misc.date = map
+            .get(K_DATE)
+            .ok_or(missing_field!(K_DATE))
+            .and_then(|d| parse_date(d))
+            .ok();
 
-        Some(Box::new(misc))
+        Ok(Box::new(misc))
     }
 }

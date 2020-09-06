@@ -30,16 +30,20 @@ impl Manual {
 }
 
 impl FromHashMap for Manual {
-    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Option<Box<Self>> {
-        let title = map.get(K_TITLE)?;
+    fn from_hash_map(map: &HashMap<String, String, RandomState>) -> Result<Box<Self>, String> {
+        let title = map.get(K_TITLE).ok_or(missing_field!(K_TITLE))?;
         let mut manual = Manual::new(title.clone());
 
         manual.author = map.get(K_AUTHOR).cloned();
         manual.organization = map.get(K_ORGANIZATION).cloned();
         manual.address = map.get(K_ADDRESS).cloned();
         manual.edition = map.get(K_EDITION).cloned();
-        manual.date = map.get(K_DATE).and_then(|d| parse_date(d));
+        manual.date = map
+            .get(K_DATE)
+            .ok_or(missing_field!(K_DATE))
+            .and_then(|d| parse_date(d))
+            .ok();
 
-        Some(Box::new(manual))
+        Ok(Box::new(manual))
     }
 }
