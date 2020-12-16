@@ -3,6 +3,8 @@ pub mod bibliography;
 pub mod references;
 pub mod utils;
 
+pub use parking_lot::Mutex;
+
 #[cfg(test)]
 mod tests {
     use crate::bib_manager::BibManager;
@@ -15,17 +17,11 @@ mod tests {
     fn it_inserts_and_flattens() {
         let manager = BibManager::new();
         let root_anchor = manager.root_ref_anchor();
-        let mut root_anchor = root_anchor.lock().unwrap();
+        let mut root_anchor = root_anchor.lock();
         root_anchor.insert(BibRef::new("test".to_string()));
         let child_anchor = root_anchor.create_anchor();
-        child_anchor
-            .lock()
-            .unwrap()
-            .insert(BibRef::new("test2".to_string()));
-        child_anchor
-            .lock()
-            .unwrap()
-            .insert(BibRef::new("test3".to_string()));
+        child_anchor.lock().insert(BibRef::new("test2".to_string()));
+        child_anchor.lock().insert(BibRef::new("test3".to_string()));
         root_anchor.flatten();
 
         assert_eq!(root_anchor.references().len(), 3)
@@ -36,13 +32,13 @@ mod tests {
         let manager = BibManager::new();
         let ref1_1 = BibRef::new("ref1".to_string());
         let anchor1 = ref1_1.anchor();
-        manager.root_ref_anchor().lock().unwrap().insert(ref1_1);
+        manager.root_ref_anchor().lock().insert(ref1_1);
         let ref1_2 = BibRef::new("ref1".to_string());
         let anchor2 = ref1_2.anchor();
-        manager.root_ref_anchor().lock().unwrap().insert(ref1_2);
+        manager.root_ref_anchor().lock().insert(ref1_2);
         let ref3 = BibRef::new("ref2".to_string());
         let anchor3 = ref3.anchor();
-        manager.root_ref_anchor().lock().unwrap().insert(ref3);
+        manager.root_ref_anchor().lock().insert(ref3);
         let mut map: HashMap<String, String> = HashMap::new();
         map.insert("key".to_string(), "ref1".to_string());
         map.insert("type".to_string(), "article".to_string());
@@ -50,17 +46,12 @@ mod tests {
         map.insert("title".to_string(), "test_title".to_string());
         map.insert("journal".to_string(), "test_journal".to_string());
         map.insert("date".to_string(), "01.09.2020".to_string());
-        manager
-            .entry_dictionary()
-            .lock()
-            .unwrap()
-            .insert_map(&map)
-            .unwrap();
+        manager.entry_dictionary().lock().insert_map(&map).unwrap();
         manager.assign_entries_to_references();
 
-        assert!(anchor1.lock().unwrap().entry.is_some());
-        assert!(anchor2.lock().unwrap().entry.is_some());
-        assert!(anchor3.lock().unwrap().entry.is_none());
+        assert!(anchor1.lock().entry.is_some());
+        assert!(anchor2.lock().entry.is_some());
+        assert!(anchor3.lock().entry.is_none());
     }
 
     #[test]

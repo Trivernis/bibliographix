@@ -2,9 +2,10 @@ use crate::bibliography::bib_types::misc::Misc;
 use crate::bibliography::bib_types::BibliographyType;
 use crate::bibliography::keys::{K_KEY, K_NOTE};
 use crate::bibliography::FromHashMap;
+use parking_lot::Mutex;
 use std::collections::hash_map::RandomState;
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 /// A single bibliography entry
 #[derive(Clone, Debug)]

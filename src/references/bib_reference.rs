@@ -1,5 +1,6 @@
 use crate::bibliography::bibliography_entry::BibliographyEntryReference;
-use std::sync::{Arc, Mutex};
+use parking_lot::Mutex;
+use std::sync::Arc;
 
 /// A reference to a bibliography entry
 #[derive(Clone, Debug)]

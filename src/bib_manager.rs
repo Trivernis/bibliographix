@@ -3,11 +3,12 @@ use crate::bibliography::bibliography_entry::{BibliographyEntry, BibliographyEnt
 use crate::bibliography::keys::K_KEY;
 use crate::bibliography::FromHashMap;
 use crate::references::anchor::BibListAnchor;
+use parking_lot::Mutex;
 use std::collections::HashMap;
 use std::io;
 use std::io::BufRead;
 use std::iter::FromIterator;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 use toml::Value;
 
 /// The root manager for that should be used for further reference operations that
@@ -34,7 +35,7 @@ impl BibManager {
 
     /// Creates a new child BibManager with a child anchor and the parents entry dict
     pub fn create_child(&self) -> BibManager {
-        let anchor = self.root_ref_anchor.lock().unwrap().create_anchor();
+        let anchor = self.root_ref_anchor.lock().create_anchor();
         let entry_dict = Arc::clone(&self.entry_dictionary);
 
         Self {
@@ -50,13 +51,13 @@ impl BibManager {
 
     /// Assigns the corresponding bib entry to each bib reference
     pub fn assign_entries_to_references(&self) {
-        let entry_dict = self.entry_dictionary.lock().unwrap();
-        let mut root_anchor = self.root_ref_anchor.lock().unwrap();
+        let entry_dict = self.entry_dictionary.lock();
+        let mut root_anchor = self.root_ref_anchor.lock();
         root_anchor.flatten();
         let entries = root_anchor.references();
         entries.iter().for_each(|e| {
             if let Some(bib) = entry_dict.get(e.key()) {
-                e.anchor().lock().unwrap().entry = Some(bib)
+                e.anchor().lock().entry = Some(bib)
             }
         })
     }
@@ -65,9 +66,9 @@ impl BibManager {
     pub fn get_entry_list_by_occurrence(&self) -> Vec<BibliographyEntryReference> {
         let mut entries = Vec::new();
         let mut inserted_keys = Vec::new();
-        let entry_dict = self.entry_dictionary.lock().unwrap();
+        let entry_dict = self.entry_dictionary.lock();
 
-        for bib_ref in self.root_ref_anchor.lock().unwrap().references() {
+        for bib_ref in self.root_ref_anchor.lock().references() {
             if let Some(bib_entry) = entry_dict.get(bib_ref.key()) {
                 if !inserted_keys.contains(bib_ref.key()) {
                     entries.push(bib_entry);
@@ -84,7 +85,7 @@ impl BibManager {
         let mut contents = String::new();
         reader.read_to_string(&mut contents)?;
         let bib_content = contents.parse::<Value>()?;
-        let mut entry_dict = self.entry_dictionary.lock().unwrap();
+        let mut entry_dict = self.entry_dictionary.lock();
 
         if let Some(table) = bib_content.as_table() {
             let mut entries = table

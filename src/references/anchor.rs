@@ -1,5 +1,6 @@
 use crate::references::bib_reference::BibRef;
-use std::sync::{Arc, Mutex};
+use parking_lot::Mutex;
+use std::sync::Arc;
 
 /// A bib list anchor that can be used to concurrently insert entries into a list
 #[derive(Clone, Debug)]
@@ -41,7 +42,7 @@ impl BibListAnchor {
         let mut new_entries = Vec::with_capacity(self.entries.len());
         self.entries.iter_mut().for_each(|e| match e {
             BibListEntry::Anchor(a) => {
-                let mut anchor = a.lock().unwrap();
+                let mut anchor = a.lock();
                 anchor.flatten();
                 new_entries.append(&mut anchor.entries);
             }

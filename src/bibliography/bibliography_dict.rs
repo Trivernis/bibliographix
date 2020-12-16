@@ -1,8 +1,9 @@
 use crate::bibliography::bibliography_entry::{BibliographyEntry, BibliographyEntryReference};
 use crate::bibliography::keys::K_KEY;
 use crate::bibliography::FromHashMap;
+use parking_lot::Mutex;
 use std::collections::HashMap;
-use std::sync::{Arc, Mutex};
+use std::sync::Arc;
 
 /// A dictionary that contains all bibliography entries
 #[derive(Clone, Debug)]
